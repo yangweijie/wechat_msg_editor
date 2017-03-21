@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<!--[if IE 9]>         <html class="ie9 no-focus" lang="zh"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-focus" lang="zh">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <title>老杨微信公众号前端编辑器</title>
+    <meta name="author" content="yangweijie">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0">
+    <!-- Icons -->
+    <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
+    <link rel="shortcut icon" href="__ADMIN_IMG__/favicons/favicon.ico">
+    <!-- END Icons -->
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="__STATIC__/admin/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="__STATIC__/libs/codemirror/lib/codemirror.css">
+    <link rel="stylesheet" href="__STATIC__/libs/codemirror/addon/hint/show-hint.css">
+    <link rel="stylesheet" href="__STATIC__/libs/codemirror/addon/fold/foldgutter.css" />
+    <link rel="stylesheet" href="__STATIC__/libs/codemirror/theme/monokai.css">
+    <link rel="stylesheet" href="__STATIC__/libs/codemirror/addon/scroll/simplescrollbars.css">
+
+    <style>
+        fieldset {
+            display: inline;
+            width: 50%;
+        }
+
+        .title {
+            /* background-color: yellow;*/
+            text-align: center;
+            font-size: 24px;
+            border-bottom: 1px solid #ccc;
+            line-height: 2em;
+        }
+
+        .CodeMirror {
+            width: 585px;
+        }
+    </style>
+    <!-- END Stylesheets -->
+    <script src="__STATIC__/admin/js/core/jquery.min.js"></script>
+    <script src="__STATIC__/admin/js/core/bootstrap.min.js"></script>
+    <!--<script src="__STATIC__/libs/prism/prism.js"></script>-->
+    <script src="__STATIC__/libs/vue.min.js"></script>
+    <script src="__STATIC__/libs/clipboard.min.js"></script>
+
+    <script src="__STATIC__/libs/codemirror/lib/codemirror.js"></script>
+    <script src="__STATIC__/libs/codemirror/lib/codemirror.js"></script>
+    <script src="__STATIC__/libs/codemirror/mode/css/css.js"></script>
+    <script src="__STATIC__/libs/codemirror/addon/fold/foldcode.js"></script>
+    <script src="__STATIC__/libs/codemirror/addon/fold/foldgutter.js"></script>
+    <script src="__STATIC__/libs/codemirror/addon/fold/brace-fold.js"></script>
+    <script src="__STATIC__/libs/codemirror/addon/fold/xml-fold.js"></script>
+    <script src="__STATIC__/libs/codemirror/addon/fold/indent-fold.js"></script>
+    <script src="__STATIC__/libs/codemirror/addon/fold/markdown-fold.js"></script>
+    <script src="__STATIC__/libs/codemirror/addon/fold/comment-fold.js"></script>
+    <script src="__STATIC__/libs/codemirror/addon/hint/show-hint.js"></script>
+    <script src="__STATIC__/libs/codemirror/addon/hint/css-hint.js"></script>
+    <script src="__STATIC__/libs/codemirror/addon/display/fullscreen.js"></script>
+    <script src="__STATIC__/libs/codemirror/addon/scroll/simplescrollbars.js"></script>
+    <script>
+
+    </script>
+    <style>
+        .edui-default .edui-toolbar .edui-button .edui-icon,
+        .edui-default .edui-toolbar .edui-menubutton .edui-icon,
+        .edui-default .edui-toolbar .edui-splitbutton .edui-icon {}
+
+        .title {
+            margin-top: 0;
+        }
+
+        .CodeMirror {
+            background: #f8f8f8;
+        }
+
+        fieldset {
+            overflow: hidden;
+        }
+
+        .box {
+            overflow: hidden;
+        }
+
+        .box1 {
+            float: left;
+            width: 50%;
+        }
+
+        .box2 {
+            float: right;
+            width: 50%;
+        }
+
+        .box2 ul {
+            padding-left: 0
+        }
+
+        .box2 ul li {
+            list-style: none;
+        }
+
+        #copyBtn {
+            display: block;
+            margin: 0 auto;
+            width: 100px;
+            height: 50px;
+        }
+    </style>
+    <style>
+        body.edit_fixed .edui-editor-toolbarbox {
+            box-shadow: 0 1px 3px #f8f8f8;
+            -moz-box-shadow: 0 1px 3px #f8f8f8;
+            -webkit-box-shadow: 0 1px 3px #f8f8f8
+        }
+
+        .appmsg_input_area .edui_toolbar_mask {
+            display: none;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.5)!important;
+            filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#80ffffff', endcolorstr='#80ffffff')
+        }
+
+        .appmsg_input_area .edui_quote_tips {
+            background: transparent url(/mpres/htmledition/images/icon/ueditor/icon_edui_quote_tips.png?__sprite) no-repeat 0 0;
+            width: 54px;
+            height: 23px;
+            vertical-align: middle;
+            display: inline-block;
+            line-height: 300px;
+            overflow: hidden
+        }
+
+        .appmsg_input_area .edui_editor_wrp {
+            position: relative;
+            z-index: 0;
+            min-height: 320px
+        }
+
+        .appmsg_input_area .edui-default .edui-editor {
+            border-width: 0
+        }
+
+        .appmsg_input_area .edui-default .edui-toolbar {
+            padding: 10px 45px
+        }
+
+        .appmsg_input_area .edui-default .edui-toolbar-primary {
+            padding-bottom: 0;
+            border-bottom-width: 0
+        }
+
+        .appmsg_input_area .editor_area .editor_content_placeholder {
+            position: absolute;
+            left: 90px;
+            right: 90px;
+            color: #a3a3a3;
+            padding-top: 10px
+        }
+    </style>
+</head>
+
+<body class="edit_fixed">
+    <div class="container" v-cloak id="app">
+        <h1 class="title">
+            微信图文编辑——专为前端使用
+        </h1>
+        <div class="row">
+            <div class="col-lg-6">
+                <form class="form-inline" name="parse" action="{:url('parse')}" target="afterParse" method="POST">
+                    <fieldset style="width: 100%">
+                        <div class="box">
+                            <div class="box1">
+                                <legend>选项：</legend>
+                                <div>
+                                    <div class="checkbox">
+                                        <label title="是否生成的代码是清理过的">
+                                            <input type="checkbox" name="param[cleanup]" value="1" v-model="form.param.cleanup"> cleanup
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label title="使用内联样式块作为CSS">
+                                            <input type="checkbox" name="param[useInlineStylesBlock]" value="1" v-model="form.param.useInlineStylesBlock"> 使用内联样式块
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label title="清除原始style 标签">
+                                            <input type="checkbox" name="param[stripOriginalStyleTags]" value="1" v-model="form.param.stripOriginalStyleTags" > 清除原始style 标签
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label title="Exclude media queries from extra 'css'' and keep media queries for inline-styles block">
+                                            <input type="checkbox" name="param[excludeMediaQueries]" value="1" v-model="form.param.excludeMediaQueries"> 排除媒体查询
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label title="Exclude conditional inline-style blocks">
+                                            <input type="checkbox" name="param[excludeConditionalInlineStylesBlock]" value="1" v-model="form.param.excludeConditionalInlineStylesBlock"> 排除行内 条件判断
+                                        </label>
+                                    </div>
+                                    <div class="checkbox">
+                                        <label title="copy and open to preview">
+                                            <input type="checkbox" name="param[openToPreview]" value="1" v-model="form.param.openToPreview"> 复制并新窗口显示(适用于Email，不包含微信公众号文章样式)
+                                        </label>
+                                    </div>
+                                    <br>
+                                    <br>
+                                </div>
+                            </div>
+                            <div class="box2">
+                                <legend>注意事项：</legend>
+                                <div>
+                                    <ul>
+                                        <li>1.避免使用a标签(a标签被过滤)</li>
+                                        <li>2.定位样式会被过滤</li>
+                                        <li>3.外部样式会被过滤</li>
+                                        <li>4.表单项只有select可以显示，其他失效</li>
+                                        <li>5.h标签样式被重写</li>
+                                        <li>6.表格被美化</li>
+                                        <li>7.发布时img地址必须在素材库</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div style="clear: both;"></div>
+                        </div>
+
+                        <h3>CSS样式：</h3>
+                        <div class="form-group">
+                            <textarea id="css" name="css">
+/* Some example CSS */
+
+@import url("something.css");
+
+body {
+  margin: 0;
+  padding: 3em 6em;
+  font-family: tahoma, arial, sans-serif;
+  color: #000;
+}
+
+#navigation a {
+  font-weight: bold;
+  text-decoration: none !important;
+}
+
+h1 {
+  font-size: 2.5em;
+}
+
+h2 {
+  font-size: 1.7em;
+}
+
+h1:before, h2:before {
+  content: "::";
+}
+
+code {
+  font-family: courier, monospace;
+  font-size: 80%;
+  color: #418A8A;
+}
+</textarea>
+                            <!--<codemirror :code="form.css" @changed="changed1" :options="cm_options"></codemirror>-->
+                            <textarea v-model="form.css" style="display: none;" name="css"></textarea>
+                        </div>
+                        <h3>html内容：</h3>
+                        <div class="appmsg_input_area">
+                            <script id="container" name="content" type="text/plain"></script>
+                            <textarea v-model="form.html" name="html" cols="80" rows="10" style="display: none;"></textarea>
+                        </div>
+                        <!--<button onclick="getContent()">获得内容</button>-->
+                    </fieldset>
+                </form>
+            </div>
+            <div class="col-lg-6">
+                <div>
+                    <iframe src="{:url('parse')}" frameborder="0" name="afterParse" height="777" width="100%" id="afterParse"></iframe>
+                    <button id="copyBtn">复制代码</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="__STATIC__/ueditor/ueditor.config.js"></script>
+    <script src="__STATIC__/ueditor/ueditor.all.min.js"></script>
+    <script type="text/javascript">
+        /**
+         *
+         * @param fn {Function}   实际要执行的函数
+         * @param delay {Number}  延迟时间，单位是毫秒（ms）
+         *
+         * @return {Function}     返回一个“防反跳”了的函数
+         */
+        function debounce(fn, delay) {
+            // 定时器，用来 setTimeout
+            var timer
+            // 返回一个函数，这个函数会在一个时间区间结束后的 delay 毫秒时执行 fn 函数
+            return function () {
+                // 保存函数调用时的上下文和参数，传递给 fn
+                var context = this
+                var args = arguments
+                // 每次这个返回的函数被调用，就清除定时器，以保证不执行 fn
+                clearTimeout(timer)
+                // 当返回的函数被最后一次调用后（也就是用户停止了某个连续的操作），
+                // 再过 delay 毫秒就执行 fn
+                timer = setTimeout(function () {
+                    fn.apply(context, args)
+                }, delay)
+            }
+        }
+
+        var ue = UE.getEditor('container', {
+            autoHeightEnabled: false,
+            initialFrameHeight: 300,
+            //  toolbars:toolbar
+        });
+        function getContent() {
+            ue.getContent();
+            console.log(ue.getContentTxt())
+            return ue.getContent();
+        }
+    </script>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                editor: null,
+                form: {
+                    param: {
+                        cleanup: false,
+                        useInlineStylesBlock: false,
+                        stripOriginalStyleTags: false,
+                        excludeMediaQueries: true,
+                        excludeConditionalInlineStylesBlock: true,
+                        openToPreview: false
+                    },
+                    css: '',
+                    html: '',
+                },
+                afterParse: '',
+                cm_options: {
+                    tabSize: 4,
+                    styleActiveLine: true,
+                    lineNumbers: true,
+                    line: true,
+                    foldGutter: true,
+                    styleSelectedText: false,
+                    gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+                    highlightSelectionMatches: { showToken: /w/, annotateScrollbar: true },
+                    mode: 'css',
+                    hintOptions: {
+                        completeSingle: false
+                    }
+                }
+            },
+
+            methods: {
+                // changed2: function (code) {
+                //   this.form.html= code;
+                //   console.log( code)
+                // }
+            },
+            beforeMount() {
+                // 读取本地缓存 刷新后还存在
+                var cache = localStorage.getItem('cache');
+                if (cache) {
+                    this.form = JSON.parse(cache);
+                }
+                ue.addListener('ready', function (editor) {
+                    // ue.setHeight(300);
+                    ue.setContent(app.form.html);
+                });
+                // ue.render(Element containerDom)
+                ue.addListener("contentChange", function () {
+                    app.form.html = ue.getContent();
+                    console.log(ue.getContent())
+                });
+
+            },
+            mounted: function () {
+                this.editor = CodeMirror.fromTextArea(document.getElementById("css"), {
+                    styleActiveLine: true,
+                    theme: 'monokai',
+                    matchBrackets: true,
+                    lineNumbers: true,
+                    lineWrapping: true,
+                    extraKeys: {
+                        "Ctrl-Space": "autocomplete",
+                        "Ctrl-Q": function (cm) {
+                            cm.foldCode(cm.getCursor());
+                        },
+                        "F11": function (cm) {
+                            cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                        },
+                        "Esc": function (cm) {
+                            if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+                        }
+                    },
+                    scrollbarStyle: "simple",
+                    foldGutter: true,
+                    gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+                    change: function (cm, changObj) {
+                        console.log(cm);
+                        console.log(changObj);
+                    }
+                });
+                var app = this;
+                this.editor.on('change', function (cm) {
+                    var css = cm.getValue();
+                    if (!!this.$emit) {
+                        this.$emit('changed', css);
+                        this.$emit('input', css);
+                    }
+                    app.form.css = css;
+                });
+                this.editor.setValue(this.form.css);
+            },
+            watch: {
+                form: {
+                    handler: function (newVal, oldVal) {
+                        function delay(newVal, app) {
+                            var $form = $('[name=parse]');
+                            // $.post($form.attr('action'), app.form, function (response) {
+                            //     console.log(response);
+                            //     app.afterParse = response;
+                            // }, 'json');
+                            $form.find('[name=html]').val(newVal.html);
+                            // alert(newVal.css);
+                            $form.submit();
+                            localStorage.setItem('cache', JSON.stringify(app.form));
+                        }
+                        debounce(delay(newVal, app), 2000);
+                    },
+                    deep: true
+                }
+            }
+        });
+    </script>
+
+    <script>
+        $(function () {
+            new Clipboard('#copyBtn', {
+                text: function (trigger) {
+                    var inner = $($(document.getElementById('afterParse').contentWindow.document.body).html()).find('#js_content').html();
+                    alert('代码已经复制到剪切板中');
+                    if (app.form.param.openToPreview) {
+                        var about_blank = window.open('about:blank', 'new_win');
+                        about_blank.document.write('<code>' + inner + '</code>');
+                    }
+                    return inner;
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
